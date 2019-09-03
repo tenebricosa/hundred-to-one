@@ -1,0 +1,31 @@
+.mistake-block .btn, .btn.close-all {
+    display: block;
+    margin: 20px auto;
+}
+.mistake-block .btn.btn-primary{
+    margin-top: 60px;
+}
+.push-answer{
+    margin-left: 10px;
+}
+
+.answer-title {
+    width: 73%;
+}
+.answer-cost {
+    width: 25%;
+}
+
+.final-answer-title{
+    width: 50%;
+}
+.final-answer-cost{
+    width: 20%;
+}
+.final-answer-open{
+    width: 25%;
+}
+
+input[type=range]:focus {
+    box-shadow: none;
+}

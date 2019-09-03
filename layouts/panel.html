@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Панель управления</title>
+  <link rel="stylesheet" href="../assets/css/photon.min.css">
+  <link rel="stylesheet" href="../assets/css/panel.css">
+</head>
+<body>
+  <div class="window">
+    <header class="toolbar toolbar-header">
+      <div class="toolbar-actions">
+        <button class="btn btn-default" id="open-team-one">
+          Показать команду 1
+        </button>
+        <button class="btn btn-default" id="open-team-two">
+          Показать команду 2
+        </button>
+
+        <button class="btn btn-default pull-right" id="open-settings">
+          <span class="icon icon-cog"></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="window-content">
+      <div id="content"></div>
+    </div>
+
+    <footer class="toolbar toolbar-footer">
+      <div class="toolbar-actions">
+        <button class="btn btn-primary" id="prev-round">
+          Предыдущий раунд
+        </button>
+        <button class="btn btn-primary pull-right" id="next-round">
+          Следующий раунд
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <script id="round-template" type="text/x-handlebars-template">
+    <div class="pane-group">
+      <div class="pane">
+        <div class="mistake-block">
+          <button class="btn btn-large btn-negative" id="on-mistake-one-0">Ошибка 1</button>
+          <button class="btn btn-large btn-negative" id="on-mistake-one-1">Ошибка 2</button>
+          <button class="btn btn-large btn-negative" id="on-mistake-one-2">Ошибка 3</button>
+
+          <button class="btn btn-primary" id="win-one">
+            Начислить очки команде 1
+          </button>
+        </div>
+      </div>
+      <div class="pane">
+        <ul class="list-group">
+          {{#each roundAnswers}}
+          <li class="list-group-item">
+            <div class="media-body pull-left">
+              <strong>{{title}}</strong>
+            </div>
+            <button class="btn btn-default pull-right" id="open-answer-{{@index}}">Открыть</button>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+      <div class="pane">
+        <div class="mistake-block">
+          <button class="btn btn-large btn-negative" id="on-mistake-two-0">Ошибка 1</button>
+          <button class="btn btn-large btn-negative" id="on-mistake-two-1">Ошибка 2</button>
+          <button class="btn btn-large btn-negative" id="on-mistake-two-2">Ошибка 3</button>
+
+          <button class="btn btn-primary" id="win-two">
+            Начислить очки команде 2
+          </button>
+        </div>
+      </div>
+    </div>
+  </script>
+
+  <script id="naoborot-template" type="text/x-handlebars-template">
+    <div class="pane-group">
+      <div class="pane">
+        <ul class="list-group">
+          {{#each roundAnswers}}
+          <li class="list-group-item">
+            <div class="media-body pull-left">
+              <strong>{{title}}</strong>
+            </div>
+            <button class="btn btn-default pull-right push-answer" id="push-team2-answer-{{@index}}">Начислить команде 2</button>
+            <button class="btn btn-default pull-right push-answer" id="push-team1-answer-{{@index}}">Начислить команде 1</button>
+            <button class="btn btn-default pull-right" id="open-answer-{{@index}}">Открыть</button>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+  </script>
+
+  <script id="final-template" type="text/x-handlebars-template">
+    <div class="pane-group">
+      <div class="pane">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <input type="text" class="form-control final-answer-title" id="input-answer-title-0" value="">
+            <input type="number" class="form-control final-answer-cost" id="input-answer-cost-0" value="">
+            <button class="btn btn-default pull-right final-answer-open" id="open-answer-0" data-index="0">Открыть</button>
+          </li>
+          <li class="list-group-item">
+            <input type="text" class="form-control final-answer-title" id="input-answer-title-1" value="">
+            <input type="number" class="form-control final-answer-cost" id="input-answer-cost-1" value="">
+            <button class="btn btn-default pull-right final-answer-open" id="open-answer-1" data-index="1">Открыть</button>
+          </li>
+          <li class="list-group-item">
+            <input type="text" class="form-control final-answer-title" id="input-answer-title-2" value="">
+            <input type="number" class="form-control final-answer-cost" id="input-answer-cost-2" value="">
+            <button class="btn btn-default pull-right final-answer-open" id="open-answer-2" data-index="2">Открыть</button>
+          </li>
+          <li class="list-group-item">
+            <input type="text" class="form-control final-answer-title" id="input-answer-title-3" value="">
+            <input type="number" class="form-control final-answer-cost" id="input-answer-cost-3" value="">
+            <button class="btn btn-default pull-right final-answer-open" id="open-answer-3" data-index="3">Открыть</button>
+          </li>
+          <li class="list-group-item">
+            <input type="text" class="form-control final-answer-title" id="input-answer-title-4" value="">
+            <input type="number" class="form-control final-answer-cost" id="input-answer-cost-4" value="">
+            <button class="btn btn-default pull-right final-answer-open" id="open-answer-4" data-index="4">Открыть</button>
+          </li>
+        </ul>
+
+        <button class="btn btn-primary close-all" id="close-one">Скрыть все</button>
+        <button class="btn btn-primary close-all" id="open-one">Показать все</button>
+      </div>
+      <div class="pane">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <input type="text" class="form-control final-answer-title" id="input-answer-title-5" value="">
+            <input type="number" class="form-control final-answer-cost" id="input-answer-cost-5" value="">
+            <button class="btn btn-default pull-right final-answer-open" id="open-answer-5" data-index="5">Открыть</button>
+          </li>
+          <li class="list-group-item">
+            <input type="text" class="form-control final-answer-title" id="input-answer-title-6" value="">
+            <input type="number" class="form-control final-answer-cost" id="input-answer-cost-6" value="">
+            <button class="btn btn-default pull-right final-answer-open" id="open-answer-6" data-index="6">Открыть</button>
+          </li>
+          <li class="list-group-item">
+            <input type="text" class="form-control final-answer-title" id="input-answer-title-7" value="">
+            <input type="number" class="form-control final-answer-cost" id="input-answer-cost-7" value="">
+            <button class="btn btn-default pull-right final-answer-open" id="open-answer-7" data-index="7">Открыть</button>
+          </li>
+          <li class="list-group-item">
+            <input type="text" class="form-control final-answer-title" id="input-answer-title-8" value="">
+            <input type="number" class="form-control final-answer-cost" id="input-answer-cost-8" value="">
+            <button class="btn btn-default pull-right final-answer-open" id="open-answer-8" data-index="8">Открыть</button>
+          </li>
+          <li class="list-group-item">
+            <input type="text" class="form-control final-answer-title" id="input-answer-title-9" value="">
+            <input type="number" class="form-control final-answer-cost" id="input-answer-cost-9" value="">
+            <button class="btn btn-default pull-right final-answer-open" id="open-answer-9" data-index="9">Открыть</button>
+          </li>
+        </ul>
+
+        <button class="btn btn-primary close-all" id="close-two">Скрыть все</button>
+        <button class="btn btn-primary close-all" id="open-two">Показать все</button>
+      </div>
+    </div>
+  </script>
+
+  <script id="settings-template" type="text/x-handlebars-template">
+    <div id="settings-form">
+      <div class="pane-group">
+
+        <div class="pane">
+          <div class="padded-more">
+            <strong>Настройки</strong>
+          </div>
+          <div class="padded-more">
+            <div class="form-group">
+              <label>Команда 1</label>
+              <input type="text" class="form-control" value="{{teams.one.title}}" id="team-one">
+            </div>
+            <div class="form-group">
+              <label>Команда 2</label>
+              <input type="text" class="form-control" value="{{teams.two.title}}" id="team-two">
+            </div>
+          </div>
+          <div class="padded-more">
+            <div class="form-group">
+                <label>Звук ответа</label>
+                <input type="range" class="form-control" value="{{volume.answer}}" id="volume-answer" min="0" max="100">
+            </div>
+            <div class="form-group">
+              <label>Звук ошибки</label>
+              <input type="range" class="form-control" value="{{volume.mistake}}" id="volume-mistake" min="0" max="100">
+            </div>
+          </div>
+          <div class="padded-more">
+            <button class="btn btn-default" id="cancel">Отменить</button>
+            <button class="btn btn-primary" id="save">Сохранить</button>
+          </div>
+        </div>
+
+        <div class="pane">
+          <div class="padded-more">
+            <strong>Одиночная игра</strong>
+          </div>
+          <div class="padded-more">
+            {{#each rounds.0.answers}}
+            <div class="form-group">
+              <input type="text" class="form-control answer-title" value="{{title}}" id="answer-title-0-{{@index}}">
+              <input type="number" class="form-control answer-cost" value="{{cost}}" id="answer-cost-0-{{@index}}">
+            </div>
+            {{/each}}
+          </div>
+        </div>
+        <div class="pane">
+          <div class="padded-more">
+            <strong>Двойная игра</strong>
+          </div>
+          <div class="padded-more">
+            {{#each rounds.1.answers}}
+            <div class="form-group">
+              <input type="text" class="form-control answer-title" value="{{title}}" id="answer-title-1-{{@index}}">
+              <input type="number" class="form-control answer-cost" value="{{cost}}" id="answer-cost-1-{{@index}}">
+            </div>
+            {{/each}}
+          </div>
+        </div>
+        <div class="pane">
+          <div class="padded-more">
+            <strong>Тройная игра</strong>
+          </div>
+          <div class="padded-more">
+            {{#each rounds.2.answers}}
+            <div class="form-group">
+              <input type="text" class="form-control answer-title" value="{{title}}" id="answer-title-2-{{@index}}">
+              <input type="number" class="form-control answer-cost" value="{{cost}}" id="answer-cost-2-{{@index}}">
+            </div>
+            {{/each}}
+          </div>
+        </div>
+        <div class="pane">
+          <div class="padded-more">
+            <strong>Игра наоборот</strong>
+          </div>
+          <div class="padded-more">
+            {{#each rounds.3.answers}}
+            <div class="form-group">
+              <input type="text" class="form-control answer-title" value="{{title}}" id="answer-title-3-{{@index}}">
+              <input type="number" class="form-control answer-cost" value="{{cost}}" id="answer-cost-3-{{@index}}">
+            </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </script>
+
+  <script>
+    require('../assets/js/panel.js')
+  </script>
+</body>
+</html>
